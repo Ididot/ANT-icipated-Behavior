@@ -23,8 +23,11 @@ public class AntMovement : MonoBehaviour
     public Vector3 RandPlaneLoc(float range)
     {
         Vector3 randDirection = Random.insideUnitSphere * range;
+        // Förskjuter riktningen relativt till myrans position
         randDirection += transform.position;
+
         NavMeshHit hit;
+        // Kollar om random position är på NavMesh och store:ar resultatet i "hit"
         NavMesh.SamplePosition(randDirection, out hit, range, 1);
         return hit.position;
     }
