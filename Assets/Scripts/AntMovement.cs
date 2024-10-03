@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class AntMovement : MonoBehaviour
 {
     private NavMeshAgent agent;
-
+    private int count = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +35,14 @@ public class AntMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Move2RandPos(); // Lol borde iaf ha nån tid så det inte uppdateras varenda frame
+        
+        if (count%1000==0)
+        {
+            Move2RandPos();
+            count=0; 
+        }
+        ++count;
+        
+        
     }
 }

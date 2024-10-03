@@ -10,6 +10,8 @@ public class Nest : MonoBehaviour
     public float Energy;
     public int AntCountMax;
     public int AntCount;
+    private Vector3 spawnPos;
+
     private class AntClasses
     { //Default Ant-class
         int AntHealth;
@@ -18,16 +20,22 @@ public class Nest : MonoBehaviour
         int carryCapacity;
 
     }
+    
 
     // Start is called before the first frame update
     void Start()
     {
+        spawnPos.x = transform.position.x;
+        spawnPos.y = AntBasic.transform.position.y;
+        spawnPos.z = transform.position.z;
+
         Energy = 100f;
         AntCountMax = 100; //Nest can hold a maximum of 100 ants on new game start.
         AntCount = 10; //You start with 10 ants
+        
         for (int i = 0; i < AntCount; i++)
         {
-            Instantiate(AntBasic);
+            Instantiate(AntBasic, spawnPos, transform.rotation, transform);
         }
         
     }
