@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 1089698}
   - component: {fileID: 1089702}
   - component: {fileID: 1089703}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -714,6 +714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c58667eacbb2941847a395ee1332ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  food: {fileID: 216502010}
 --- !u!1 &872848742 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3153966550134753834, guid: cc1b698ba73214642b5aea5e349bb76f, type: 3}
@@ -1153,6 +1154,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3819100565542269852, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
+      propertyPath: food
+      value: 
+      objectReference: {fileID: 216502010}
+    - target: {fileID: 3819100565542269852, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
+      propertyPath: obstacle
+      value: 
+      objectReference: {fileID: 872848742}
     - target: {fileID: 5850838106564422934, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.932
@@ -1212,7 +1221,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 858411490872226025, guid: cc1b698ba73214642b5aea5e349bb76f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.07
+      value: -12.14
       objectReference: {fileID: 0}
     - target: {fileID: 858411490872226025, guid: cc1b698ba73214642b5aea5e349bb76f, type: 3}
       propertyPath: m_LocalPosition.y

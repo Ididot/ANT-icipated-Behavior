@@ -7,6 +7,8 @@ public class AntMovement : MonoBehaviour
 {
     private NavMeshAgent agent;
     private int count = 0;
+    public NavMeshHit hit;
+    public GameObject food;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +28,6 @@ public class AntMovement : MonoBehaviour
         // Förskjuter riktningen relativt till myrans position
         randDirection += transform.position;
 
-        NavMeshHit hit;
         // Kollar om random position är på NavMesh och store:ar resultatet i "hit"
         NavMesh.SamplePosition(randDirection, out hit, range, 1);
         return hit.position;
@@ -35,14 +36,13 @@ public class AntMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (count%1000==0)
+        agent.destination = food.transform.position;
+
+        /* if (count%1000==0)
         {
             Move2RandPos();
             count=0; 
         }
-        ++count;
-        
-        
+        ++count; */
     }
 }
