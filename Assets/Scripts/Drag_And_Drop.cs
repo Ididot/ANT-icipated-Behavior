@@ -6,6 +6,7 @@ public class Drag_And_Drop : MonoBehaviour
 {
     public GameObject obstacle;
     public GameObject food;
+    public GameObject ant;
     Vector3 mousePosition;
     
     private Vector3 GetMousePosition()
@@ -25,4 +26,8 @@ public class Drag_And_Drop : MonoBehaviour
   
     }
 
+    void Start()
+    {
+        ant.GetComponent<AntMovement>().SetFood(food);
+    }
 }
