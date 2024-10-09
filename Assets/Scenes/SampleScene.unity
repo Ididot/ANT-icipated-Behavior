@@ -275,11 +275,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacle: {fileID: 872848742}
+  food: {fileID: 0}
 --- !u!1 &216502010 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7709930775624866451, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
   m_PrefabInstance: {fileID: 4602019897279247743}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &216502016
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216502010}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3
 --- !u!1 &271942126
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +419,8 @@ MonoBehaviour:
   Energy: 0
   AntCountMax: 0
   AntCount: 0
+  food: 0
+  foodMax: 0
 --- !u!136 &470775600
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -610,7 +640,7 @@ BoxCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
@@ -716,6 +746,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nest: {fileID: 470775598}
   food: {fileID: 216502010}
+  foundFood: 0
   detectionRange: 5
   moveCooldown: 3
 --- !u!1 &872848742 stripped
@@ -1209,10 +1240,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food
       objectReference: {fileID: 0}
+    - target: {fileID: 7727969192072089191, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7709930775624866451, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 216502016}
   m_SourcePrefab: {fileID: 100100000, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
 --- !u!1001 &5410446901888456313
 PrefabInstance:
@@ -1283,8 +1321,8 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 1089701}
   - {fileID: 470775603}
-  - {fileID: 816680540}
   - {fileID: 1709696460}
   - {fileID: 995938647}
   - {fileID: 5410446901888456313}
   - {fileID: 4602019897279247743}
+  - {fileID: 816680540}

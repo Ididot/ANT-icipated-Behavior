@@ -8,6 +8,7 @@ public class FoodResource : MonoBehaviour
     //Size of the food -> 5/10/20 pieces of food
     //Which ants back will the food piece ride on
     public GameObject Ant;
+    public GameObject Food;
     private Vector3 babyFoodTransCoef;//Small icon for ants transform coefficient
     private class size
     {
@@ -38,8 +39,17 @@ public class FoodResource : MonoBehaviour
         }
         
     }
-    
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ant"))
+        {
+            other.GetComponent<AntMovement>().foundFood=true;
+            Instantiate(Food, other.transform.position, Food.transform.rotation, other.transform);
+            Debug.Log("Hejo");
+        }
+    }
+
 
 
 

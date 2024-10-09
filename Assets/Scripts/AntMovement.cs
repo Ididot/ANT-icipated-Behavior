@@ -10,7 +10,7 @@ public class AntMovement : MonoBehaviour
     //private int count = 0;
     public NavMeshHit hit;
     public GameObject food;
-    private bool foundFood = false;
+    public bool foundFood = false;
     public float detectionRange = 5.0f; // Hur nära myran behöver va för att upptäcka att det finns mat
     public float moveCooldown = 2.0f; // Tidsintervall för random movement
     private float time2NextMove = 0.0f; // Trackar när myrar borde flytta sig härnäst
