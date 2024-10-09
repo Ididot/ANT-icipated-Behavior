@@ -714,7 +714,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c58667eacbb2941847a395ee1332ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nest: {fileID: 470775598}
   food: {fileID: 216502010}
+  detectionRange: 5
+  moveCooldown: 3
 --- !u!1 &872848742 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3153966550134753834, guid: cc1b698ba73214642b5aea5e349bb76f, type: 3}
