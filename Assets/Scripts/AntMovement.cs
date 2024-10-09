@@ -7,7 +7,7 @@ public class AntMovement : MonoBehaviour
 {
     private NavMeshAgent agent;
     public GameObject nest;
-    private int count = 0;
+    //private int count = 0;
     public NavMeshHit hit;
     public GameObject food;
     private bool foundFood = false;
@@ -83,6 +83,12 @@ public class AntMovement : MonoBehaviour
                 // Lämna ifrån maten
                 foundFood = false;
                 Debug.Log("Time 4 chomk! yummy");
+                //Found food->+1 on food mätare
+                if(nest.GetComponent<Nest>().food< nest.GetComponent<Nest>().foodMax)
+                ++nest.GetComponent<Nest>().food;
+                
+                nest.GetComponent<Nest>().spawnAnt(); //Funktion för att instantiera nya myror
+
                 // Fortsätt leta efter mer mat
                 Move2RandPos();
             }
