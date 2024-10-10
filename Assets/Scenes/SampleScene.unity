@@ -275,7 +275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacle: {fileID: 872848742}
-  food: {fileID: 0}
+  food: {fileID: 216502010}
 --- !u!1 &216502010 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7709930775624866451, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
@@ -814,8 +814,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 11
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
