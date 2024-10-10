@@ -276,6 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacle: {fileID: 872848742}
   food: {fileID: 216502010}
+  temp: {fileID: 0}
 --- !u!1 &216502010 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7709930775624866451, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
@@ -409,7 +410,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -479,7 +480,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 816680540}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
@@ -677,12 +679,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816680536}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.81, y: 0.5, z: -0.023}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.81, y: -0.5, z: -0.023}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 470775603}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &816680541
 NavMeshAgent:
@@ -724,6 +726,8 @@ MonoBehaviour:
   foundFood: 0
   detectionRange: 5
   moveCooldown: 3
+  child: {fileID: 0}
+  hasChild: 0
 --- !u!54 &816680543
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1392,4 +1396,3 @@ SceneRoots:
   - {fileID: 5410446901888456313}
   - {fileID: 4602019897279247743}
   - {fileID: 1392452099}
-  - {fileID: 816680540}

@@ -122,6 +122,7 @@ public class AntMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Food")&&!hasChild)//Ensure collision is actually food
         {
+            other.gameObject.GetComponent<foodManager>().updateFoodStash();
             //Create bbyfood
             child=Instantiate(bbyFood, transform.position, other.gameObject.transform.rotation, transform);
             hasChild = true;
