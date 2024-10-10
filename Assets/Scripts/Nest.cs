@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Nest : MonoBehaviour
@@ -13,6 +14,7 @@ public class Nest : MonoBehaviour
     public int food;
     public int foodMax;
     private Vector3 spawnPos;
+
 
     private class AntClasses
     { //Default Ant-class
@@ -53,11 +55,28 @@ public class Nest : MonoBehaviour
 
         }
 
+
     }
 
     // Update is called once per frame
     void Update()
     {
         Energy -= 0.001f;
+    }
+
+    //Functioning collision detection with nest
+    private void OnTriggerEnter(Collider other)
+    {
+        /*
+        if (other.gameObject.GetComponent<AntMovement>().hasChild)
+        {
+            Debug.Log("Has bebe?");
+            if (other.gameObject.transform.GetChild(0).gameObject == null)
+            {
+                Debug.Log("Thanks for the bebe");
+            }
+
+        }
+        */
     }
 }
