@@ -88,16 +88,16 @@ public class AntMovement : MonoBehaviour
                 foundFood = false;
                 //Debug.Log("Time 4 chomk! yummy");
                 //Found if storage allows more food, accept food remove food from ant and spawn new ant
-                if(nest.GetComponent<Nest>().food< nest.GetComponent<Nest>().foodMax)
+                if (nest.GetComponent<Nest>().food < nest.GetComponent<Nest>().foodMax)
                 {
-                    //Destroy, this objects(Ants) first child
-                    Destroy(gameObject.transform.GetChild(0).gameObject);
-                    hasChild = false;
-                    nest.GetComponent<Nest>().spawnAnt(); //Funktion för att instantiera nya myror
-                    ++nest.GetComponent<Nest>().food;
+                    if (transform.childCount > 0) // Ensure the ant has a child before attempting to destroy it
+                    {
+                        Destroy(gameObject.transform.GetChild(0).gameObject); // Destroy the first child
+                        hasChild = false;
+                        nest.GetComponent<Nest>().spawnAnt(); // Spawn a new ant
+                        ++nest.GetComponent<Nest>().food;
+                    }
                 }
-                
-                
                 // Fortsätt leta efter mer mat
                 Move2RandPos();
             }
@@ -113,7 +113,7 @@ public class AntMovement : MonoBehaviour
         }
         ++count; */
 
-        if(hasChild) //Check if ant has bbyfood, if it do track the food to ant position
+        if(hasChild && child != null) //Check if ant has bbyfood, if it do track the food to ant position
         child.transform.position = new Vector3(transform.position.x,transform.position.y+0.5f, transform.position.z);
     }
 
