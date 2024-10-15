@@ -23,7 +23,8 @@ public class AntMovement : MonoBehaviour
         Return,
         Attacked
         };
-    private AntState currentState = AntState.Idle;
+    [SerializeField]private AntState currentState = AntState.Idle;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +61,7 @@ public class AntMovement : MonoBehaviour
     void Transition2State(AntState newState)
     {
         currentState = newState;
-        Debug.Log("TRANSITIONED TO STATE: " + newState.ToString());
+        //Debug.Log("TRANSITIONED TO STATE: " + newState.ToString());
     }
 
     void Search4Food()
@@ -90,15 +91,11 @@ public class AntMovement : MonoBehaviour
                 }
             }
             
-            /*
-            float dist2Food = Vector3.Distance(transform.position, food.transform.position);
-
-            if (food != null && dist2Food <= detectionRange)
-            {
-                agent.destination = food.transform.position;
-                Transition2State(AntState.Gather);
-            }
-            */
+        }
+        else
+        {
+            Transition2State(AntState.Search);
+            foundFood = false;
         }
     }
 
@@ -111,7 +108,7 @@ public class AntMovement : MonoBehaviour
             if(dist2Food <= 1.0f)
             {
                 foundFood = true;
-                Debug.Log("Wooow foowmd!!");
+                //Debug.Log("Wooow foowmd!!");
                 Transition2State(AntState.Return);
             }
         }
@@ -139,14 +136,11 @@ public class AntMovement : MonoBehaviour
                 {
                     if (transform.childCount > 0) // Ensure the ant has a child before attempting to destroy it
                     {
-                        if(gameObject.transform.GetChild(0) != null)
-                        {
-                            Destroy(gameObject.transform.GetChild(0).gameObject); // Destroy the first child
-                        }
+                       Destroy(gameObject.transform.GetChild(0).gameObject); // Destroy the first child
+                       hasChild = false;
+                       nest.GetComponent<Nest>().spawnAnt(this); // Spawn a new ant
+                       nest.GetComponent<Nest>().food++;
                     }
-                        hasChild = false;
-                        nest.GetComponent<Nest>().spawnAnt(this); // Spawn a new ant
-                        nest.GetComponent<Nest>().food++;
                 }
                 Transition2State(AntState.Search);
             }
@@ -196,60 +190,6 @@ public class AntMovement : MonoBehaviour
         if(hasChild && child != null) //Check if ant has bbyfood, if it do track the food to ant position
         child.transform.position = new Vector3(transform.position.x,transform.position.y+0.5f, transform.position.z);
 
-        // *** NEDAN FÖLJER HELA GAMLA UPDATE-LOGIKEN UTAN SWITCH-CASE ***
-        /* if(!foundFood&&!hasChild)
-        {
-            // Decreasa timern med varje frame
-            time2NextMove -= Time.deltaTime;
-
-            // Funktionen kallas bara när myran har nått sin destination och off movement cooldown
-            //Här vill vi potentiellt implementera spåren, så dem hittar tillbaka till food
-            if(agent.remainingDistance <= agent.stoppingDistance && time2NextMove <= 0.0f)
-            {
-                Move2RandPos();
-            }
-
-            float dist2Food = Vector3.Distance(transform.position, food.transform.position);
-
-            // Om mat hittad
-            if(dist2Food <= detectionRange)
-            {
-                // Gå mot mat
-                agent.destination = food.transform.position;
-            }
-
-            // Om myran är framme vid maten
-            if(dist2Food <= 1.0f)
-            {
-                foundFood = true;
-                //Debug.Log("Wooow foowmd!!");
-            }
-        }
-        else
-        {
-            float dist2Nest = Vector3.Distance(transform.position, nest.transform.position);
-            // Gå mot nest
-            agent.destination = nest.transform.position;
-
-            // Om myran är framme vid nest
-            if(dist2Nest <= 1.0f)
-            {
-                // Lämna ifrån maten
-                foundFood = false;
-                //Debug.Log("Time 4 chomk! yummy");
-                //Found if storage allows more food, accept food remove food from ant and spawn new ant
-                if (nest.GetComponent<Nest>().food < nest.GetComponent<Nest>().foodMax && hasChild)
-                {
-                        Destroy(transform.GetChild(0).gameObject); // Destroy the first child of ant
-                        nest.GetComponent<Nest>().spawnAnt(this); // Spawn a new ant
-                        ++nest.GetComponent<Nest>().food;
-                        hasChild = false;
-                }
-                // Fortsätt leta efter mer mat
-                Move2RandPos();
-            }
-        } 
-        */
     }
 
     //Check collision with food and ant
@@ -257,8 +197,6 @@ public class AntMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Food")&&!hasChild)//Ensure collision is actually food
         {
-
-
             other.gameObject.GetComponent<foodManager>().updateFoodStash();
 
             //Create bbyfood

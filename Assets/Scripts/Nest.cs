@@ -7,9 +7,7 @@ using UnityEngine;
 public class Nest : MonoBehaviour
 {
     public GameObject AntBasic;
-    public GameObject SoldierAnt;
     private GameObject _spawnAnt;
-    private GameObject _enemy;
     //Public values of nest
     public float Energy;
     public int AntCountMax;
@@ -55,10 +53,7 @@ public class Nest : MonoBehaviour
 
 
     }
-    public void rememberEnemy(EnemyMovement enemy)
-    {
-        _enemy = enemy.gameObject;
-    }
+    
 
     // Update is called once per frame
     void Update()
