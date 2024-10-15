@@ -371,6 +371,7 @@ GameObject:
   - component: {fileID: 367349352}
   - component: {fileID: 367349357}
   - component: {fileID: 367349356}
+  - component: {fileID: 367349358}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -416,7 +417,6 @@ MonoBehaviour:
   attackDamage: 1
   attackRange: 1.5
   attackCooldown: 2
-  nest: {fileID: 470775598}
 --- !u!195 &367349354
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -504,6 +504,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &367349358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367349351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd5e4c24f271991449efbd36fc378e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &470775598
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,6 +554,8 @@ MonoBehaviour:
   AntCount: 0
   food: 0
   foodMax: 0
+  changeClass: 0
+  threatDet: 0
 --- !u!136 &470775600
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -873,8 +887,8 @@ MonoBehaviour:
   foundFood: 0
   detectionRange: 5
   moveCooldown: 3
-  child: {fileID: 0}
   hasChild: 0
+  currentState: 0
 --- !u!54 &816680543
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1123,7 +1137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5850838106564422934, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.045
+      value: -19.115
       objectReference: {fileID: 0}
     - target: {fileID: 5850838106564422934, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1131,7 +1145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5850838106564422934, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.186
+      value: 4.6659994
       objectReference: {fileID: 0}
     - target: {fileID: 5850838106564422934, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1418,7 +1432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5850838106564422934, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.12
+      value: -19.19
       objectReference: {fileID: 0}
     - target: {fileID: 5850838106564422934, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1426,7 +1440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5850838106564422934, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.440001
+      value: 5.92
       objectReference: {fileID: 0}
     - target: {fileID: 5850838106564422934, guid: ba24c850c221af04ebf3b0af58abec30, type: 3}
       propertyPath: m_LocalRotation.w
