@@ -10,7 +10,7 @@ public class EnemyMovement : MonoBehaviour
     public float moveCooldown = 3.0f;
     private float time2NextMove = 0.0f;
     public int attackDamage = 1;
-    public float attackRange = 1.5f;
+    public float attackRange = 0.75f;
     public float attackCooldown = 2.0f;
     private float time2NextAttack = 0.0f;
     //public GameObject nest; // Om enemy ska direkt påverka nest på nåt sätt
