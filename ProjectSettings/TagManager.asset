@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ant
   - Food
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -66,6 +66,11 @@ public class AntMovement : MonoBehaviour
 
     void Search4Food()
     {
+        if (hasChild)
+        {
+            Transition2State(AntState.Return);
+
+        }
         // Myrorna förflyttar sig randomly för att söka efter mat
         if(!foundFood && !hasChild)
         {
@@ -93,17 +98,17 @@ public class AntMovement : MonoBehaviour
                     if(dist2Food <= 1.0f)
                     {
                         foundFood = true;
-                        Debug.Log("Wooow foowmd!!");
+                        //Debug.Log("Wooow foowmd!!");
                         Transition2State(AntState.Return);
                     }
                 }
             }
             
         }
-        else
+        else if(!hasChild)
         {
             Transition2State(AntState.Search);
-            foundFood = false;
+            foundFood = true;
         }
     }
 
@@ -128,7 +133,7 @@ public class AntMovement : MonoBehaviour
 
     void Return2Nest()
     {    
-        if(foundFood)
+        if(hasChild)
         {
             agent.destination = nest.transform.position;
 
@@ -136,7 +141,7 @@ public class AntMovement : MonoBehaviour
             if(dist2Nest <= 1.0f)
             {
                 foundFood = false;
-                Debug.Log("Food deposited.");
+                //Debug.Log("Food deposited.");
                 food = null;
 
                 //Found if storage allows more food, accept food remove food from ant and spawn new ant
