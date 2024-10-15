@@ -23,7 +23,8 @@ public class AntMovement : MonoBehaviour
         Flee,
         Attacked
         };
-    [SerializeField] private AntState currentState = AntState.Idle;
+    [SerializeField]private AntState currentState = AntState.Idle;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +61,7 @@ public class AntMovement : MonoBehaviour
     void Transition2State(AntState newState)
     {
         currentState = newState;
-        Debug.Log("TRANSITIONED TO STATE: " + newState.ToString());
+        //Debug.Log("TRANSITIONED TO STATE: " + newState.ToString());
     }
 
     void Search4Food()
@@ -97,6 +98,27 @@ public class AntMovement : MonoBehaviour
                     }
                 }
             }
+            
+        }
+        else
+        {
+            Transition2State(AntState.Search);
+            foundFood = false;
+        }
+    }
+
+    void GatherFood()
+    {
+        if(food != null)
+        {
+            float dist2Food = Vector3.Distance(transform.position, food.transform.position);
+
+            if(dist2Food <= 1.0f)
+            {
+                foundFood = true;
+                //Debug.Log("Wooow foowmd!!");
+                Transition2State(AntState.Return);
+            }
         }
         else
         {
@@ -122,14 +144,11 @@ public class AntMovement : MonoBehaviour
                 {
                     if (transform.childCount > 0) // Ensure the ant has a child before attempting to destroy it
                     {
-                        if(gameObject.transform.GetChild(0) != null)
-                        {
-                            Destroy(gameObject.transform.GetChild(0).gameObject); // Destroy the first child
-                        }
+                       Destroy(gameObject.transform.GetChild(0).gameObject); // Destroy the first child
+                       hasChild = false;
+                       nest.GetComponent<Nest>().spawnAnt(this); // Spawn a new ant
+                       nest.GetComponent<Nest>().food++;
                     }
-                    hasChild = false;
-                    nest.GetComponent<Nest>().spawnAnt(this); // Spawn a new ant
-                    nest.GetComponent<Nest>().food++;
                 }
                 Transition2State(AntState.Search);
             }
