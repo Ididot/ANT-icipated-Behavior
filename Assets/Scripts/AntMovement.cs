@@ -30,8 +30,8 @@ public class AntMovement : MonoBehaviour
     void Start()
     {
         child = bbyFood;
-
         agent = GetComponent<NavMeshAgent>();
+        agent.speed = 4.0f;
         Transition2State(AntState.Search);
     }
 
@@ -161,7 +161,24 @@ public class AntMovement : MonoBehaviour
 
     void FleeFromEnemy()
     {
-        return;
+        Collider[] enemyInRange = Physics.OverlapSphere(transform.position, detectionRange);
+
+        foreach(Collider enemy in enemyInRange)
+        {
+            if(enemy.CompareTag("Enemy"))
+            {
+                Vector3 fleeDirection = (transform.position - enemy.transform.position).normalized;
+                Vector3 fleeDestination = transform.position + fleeDirection * detectionRange;
+                
+                NavMeshHit hit;
+                if(NavMesh.SamplePosition(fleeDestination, out hit, detectionRange, 1))
+                {
+                    agent.destination = hit.position;
+                }
+                return;
+            }
+        }
+        Transition2State(AntState.Search);
     }
 
     void HandleAttack() 
@@ -178,6 +195,8 @@ public class AntMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //FleeFromEnemy();
+
         switch(currentState)
         {
             case AntState.Idle:

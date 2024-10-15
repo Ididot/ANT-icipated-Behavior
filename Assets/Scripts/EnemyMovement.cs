@@ -20,6 +20,7 @@ public class EnemyMovement : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.speed = 2.0f;
         Move2RandPos();
     }
 
