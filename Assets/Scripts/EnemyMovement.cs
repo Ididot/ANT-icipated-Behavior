@@ -80,6 +80,8 @@ void AttackAnt(GameObject ant)
 
         if (antMovement != null)
         {
+            ant.GetComponentInParent<Nest>().AntCount--;
+            ant.GetComponentInParent<Nest>().threatDet = true;
             Destroy(ant);
             //nest.GetComponent<Nest>().Energy -= attackDamage;
             // Vill ba ha koden ovan som referens så vi vet hur man kan göra, t.ex. ifall man påverkar nest direkt genom att döda

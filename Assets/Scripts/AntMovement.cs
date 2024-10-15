@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,7 +14,7 @@ public class AntMovement : MonoBehaviour
     public float detectionRange = 5.0f; // Hur nära myran behöver va för att upptäcka att det finns mat
     public float moveCooldown = 2.0f; // Tidsintervall för random movement
     private float time2NextMove = 0.0f; // Trackar när myrar borde flytta sig härnäst
-    public GameObject child;
+    private GameObject child;
     public bool hasChild = false;
     private enum AntState {
         Idle,
@@ -27,6 +28,8 @@ public class AntMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        child = bbyFood;
+
         agent = GetComponent<NavMeshAgent>();
         Transition2State(AntState.Search);
     }
@@ -140,10 +143,10 @@ public class AntMovement : MonoBehaviour
                         {
                             Destroy(gameObject.transform.GetChild(0).gameObject); // Destroy the first child
                         }
-                        hasChild = false;
-                        nest.GetComponent<Nest>().spawnAnt(); // Spawn a new ant
-                        nest.GetComponent<Nest>().food++;
                     }
+                        hasChild = false;
+                        nest.GetComponent<Nest>().spawnAnt(this); // Spawn a new ant
+                        nest.GetComponent<Nest>().food++;
                 }
                 Transition2State(AntState.Search);
             }
@@ -201,7 +204,7 @@ public class AntMovement : MonoBehaviour
 
             // Funktionen kallas bara när myran har nått sin destination och off movement cooldown
             //Här vill vi potentiellt implementera spåren, så dem hittar tillbaka till food
-            if(agent.remainingDistance <= agent.stoppingDistance && time2NextMove <= 0.0f &&!hasChild)
+            if(agent.remainingDistance <= agent.stoppingDistance && time2NextMove <= 0.0f)
             {
                 Move2RandPos();
             }
@@ -235,15 +238,12 @@ public class AntMovement : MonoBehaviour
                 foundFood = false;
                 //Debug.Log("Time 4 chomk! yummy");
                 //Found if storage allows more food, accept food remove food from ant and spawn new ant
-                if (nest.GetComponent<Nest>().food < nest.GetComponent<Nest>().foodMax)
+                if (nest.GetComponent<Nest>().food < nest.GetComponent<Nest>().foodMax && hasChild)
                 {
-                    if (transform.childCount > 0) // Ensure the ant has a child before attempting to destroy it
-                    {
-                        Destroy(gameObject.transform.GetChild(0).gameObject); // Destroy the first child
-                        hasChild = false;
-                        nest.GetComponent<Nest>().spawnAnt(); // Spawn a new ant
+                        Destroy(transform.GetChild(0).gameObject); // Destroy the first child of ant
+                        nest.GetComponent<Nest>().spawnAnt(this); // Spawn a new ant
                         ++nest.GetComponent<Nest>().food;
-                    }
+                        hasChild = false;
                 }
                 // Fortsätt leta efter mer mat
                 Move2RandPos();
@@ -257,7 +257,10 @@ public class AntMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Food")&&!hasChild)//Ensure collision is actually food
         {
+
+
             other.gameObject.GetComponent<foodManager>().updateFoodStash();
+
             //Create bbyfood
             child=Instantiate(bbyFood, transform.position, other.gameObject.transform.rotation, transform);
             hasChild = true;
