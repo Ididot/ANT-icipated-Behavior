@@ -16,19 +16,22 @@ public class AntMovement : MonoBehaviour
     private float time2NextMove = 0.0f; // Trackar när myrar borde flytta sig härnäst
     private GameObject child;
     public bool hasChild = false;
-    private enum AntState {
+    private Vector3[] trailPositions;
+    private enum AntState
+    {
         Idle,
         Search,
         Return,
         Flee,
         Attacked
-        };
-    [SerializeField]private AntState currentState = AntState.Idle;
-    
+    };
+    [SerializeField] private AntState currentState = AntState.Idle;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<TrailRenderer>().emitting = false;
         child = bbyFood;
         agent = GetComponent<NavMeshAgent>();
         agent.speed = 4.0f;
@@ -40,11 +43,11 @@ public class AntMovement : MonoBehaviour
         food = foodObject;
     }
 
-     void Move2RandPos()
+    void Move2RandPos()
     {
         Vector3 randPos = RandPlaneLoc(10.0f);
         agent.SetDestination(randPos);
-    } 
+    }
 
     public Vector3 RandPlaneLoc(float range)
     {
@@ -72,13 +75,13 @@ public class AntMovement : MonoBehaviour
 
         }
         // Myrorna förflyttar sig randomly för att söka efter mat
-        if(!foundFood && !hasChild)
+        if (!foundFood && !hasChild)
         {
             time2NextMove -= Time.deltaTime;
 
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                if(time2NextMove <= 0.0f)
+                if (time2NextMove <= 0.0f)
                 {
                     Move2RandPos();
                     time2NextMove = moveCooldown;
@@ -87,15 +90,15 @@ public class AntMovement : MonoBehaviour
 
             // Om mat är inom detection range, gå dit och sen byt till Return state           
             Collider[] foodColliders = Physics.OverlapSphere(transform.position, detectionRange);
-            foreach(Collider foodCollider in foodColliders)
+            foreach (Collider foodCollider in foodColliders)
             {
-                if(foodCollider.CompareTag("Food") && foodCollider.transform.parent == null)
+                if (foodCollider.CompareTag("Food") && foodCollider.transform.parent == null)
                 {
                     food = foodCollider.gameObject; // Denna behövs för att uppdatera matreferensen, som nu är upplockad
                     agent.destination = food.transform.position;
 
                     float dist2Food = Vector3.Distance(transform.position, food.transform.position);
-                    if(dist2Food <= 1.0f)
+                    if (dist2Food <= 1.0f)
                     {
                         foundFood = true;
                         //Debug.Log("Wooow foowmd!!");
@@ -103,9 +106,9 @@ public class AntMovement : MonoBehaviour
                     }
                 }
             }
-            
+
         }
-        else if(!hasChild)
+        else if (!hasChild)
         {
             Transition2State(AntState.Search);
             foundFood = true;
@@ -114,11 +117,11 @@ public class AntMovement : MonoBehaviour
 
     void GatherFood()
     {
-        if(food != null)
+        if (food != null)
         {
             float dist2Food = Vector3.Distance(transform.position, food.transform.position);
 
-            if(dist2Food <= 1.0f)
+            if (dist2Food <= 1.0f)
             {
                 foundFood = true;
                 //Debug.Log("Wooow foowmd!!");
@@ -132,13 +135,14 @@ public class AntMovement : MonoBehaviour
     }
 
     void Return2Nest()
-    {    
-        if(hasChild)
+    {
+        if (hasChild) //Ant has food to return to nest with
         {
+            GetComponent<TrailRenderer>().emitting = true;
             agent.destination = nest.transform.position;
 
             float dist2Nest = Vector3.Distance(transform.position, nest.transform.position);
-            if(dist2Nest <= 1.0f)
+            if (dist2Nest <= 1.0f)
             {
                 foundFood = false;
                 //Debug.Log("Food deposited.");
@@ -149,14 +153,19 @@ public class AntMovement : MonoBehaviour
                 {
                     if (transform.childCount > 0) // Ensure the ant has a child before attempting to destroy it
                     {
-                       Destroy(gameObject.transform.GetChild(0).gameObject); // Destroy the first child
-                       hasChild = false;
-                       nest.GetComponent<Nest>().spawnAnt(this); // Spawn a new ant
-                       nest.GetComponent<Nest>().food++;
+                        Destroy(gameObject.transform.GetChild(0).gameObject); // Destroy the first child
+                        hasChild = false;
+                        nest.GetComponent<Nest>().spawnAnt(this); // Spawn a new ant
+                        nest.GetComponent<Nest>().food++;
                     }
                 }
                 Transition2State(AntState.Search);
+                GetComponent<TrailRenderer>().emitting = false;
+                Vector3 temp=GetComponent<TrailRenderer>().GetPosition(GetComponent<TrailRenderer>().positionCount-1);
+                Debug.Log(temp + "<-Trail end / ANT position->"+transform.position );
+
             }
+            //int posCount = GetComponent<TrailRenderer>().GetVisiblePositions(trailPositions);
         }
         else
         {
@@ -168,15 +177,15 @@ public class AntMovement : MonoBehaviour
     {
         Collider[] enemyInRange = Physics.OverlapSphere(transform.position, detectionRange);
 
-        foreach(Collider enemy in enemyInRange)
+        foreach (Collider enemy in enemyInRange)
         {
-            if(enemy.CompareTag("Enemy"))
+            if (enemy.CompareTag("Enemy"))
             {
                 Vector3 fleeDirection = (transform.position - enemy.transform.position).normalized;
                 Vector3 fleeDestination = transform.position + fleeDirection * detectionRange;
-                
+
                 NavMeshHit hit;
-                if(NavMesh.SamplePosition(fleeDestination, out hit, detectionRange, 1))
+                if (NavMesh.SamplePosition(fleeDestination, out hit, detectionRange, 1))
                 {
                     agent.destination = hit.position;
                 }
@@ -186,9 +195,9 @@ public class AntMovement : MonoBehaviour
         Transition2State(AntState.Search);
     }
 
-    void HandleAttack() 
+    void HandleAttack()
     {
-        if(gameObject != null)
+        if (gameObject != null)
             Destroy(gameObject);
     }
 
@@ -202,20 +211,20 @@ public class AntMovement : MonoBehaviour
     {
         //FleeFromEnemy();
 
-        switch(currentState)
+        switch (currentState)
         {
             case AntState.Idle:
                 // Gör nada
                 break;
-            
+
             case AntState.Search:
                 Search4Food();
                 break;
-            
+
             case AntState.Return:
                 Return2Nest();
                 break;
-            
+
             case AntState.Flee:
                 FleeFromEnemy();
                 break;
@@ -225,19 +234,19 @@ public class AntMovement : MonoBehaviour
                 break;
         }
 
-        if(hasChild && child != null) //Check if ant has bbyfood, if it do track the food to ant position
-        child.transform.position = new Vector3(transform.position.x,transform.position.y+0.5f, transform.position.z);
+        if (hasChild && child != null) //Check if ant has bbyfood, if it do track the food to ant position
+            child.transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
     }
 
     //Check collision with food and ant
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Food")&&!hasChild)//Ensure collision is actually food
+        if (other.gameObject.CompareTag("Food") && !hasChild)//Ensure collision is actually food
         {
             other.gameObject.GetComponent<foodManager>().updateFoodStash();
 
             //Create bbyfood
-            child=Instantiate(bbyFood, transform.position, other.gameObject.transform.rotation, transform);
+            child = Instantiate(bbyFood, transform.position, other.gameObject.transform.rotation, transform);
             hasChild = true;
             food = null;
         }
