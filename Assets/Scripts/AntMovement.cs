@@ -11,9 +11,12 @@ public class AntMovement : MonoBehaviour
     public GameObject food;
     public GameObject bbyFood;
     public bool foundFood = false;
-    public float detectionRange = 5.0f; // Hur nära myran behöver va för att upptäcka att det finns mat
-    public float moveCooldown = 2.0f; // Tidsintervall för random movement
-    private float time2NextMove = 0.0f; // Trackar när myrar borde flytta sig härnäst
+    public float detectionRange = 1.25f; // Hur nära myran behöver va för att upptäcka att det finns mat
+    public float trailDetectionRange = 5.0f;
+    public float enemyDetectionRange = 3.5f;
+    private Vector3 initialFoodPosition;
+    //public float moveCooldown = 2.0f; // Tidsintervall för random movement
+    //private float time2NextMove = 0.0f; // Trackar när myrar borde flytta sig härnäst
     private GameObject child;
     public bool hasChild = false;
     private Vector3[] trailPositions;
@@ -26,6 +29,8 @@ public class AntMovement : MonoBehaviour
         Attacked
     };
     [SerializeField] private AntState currentState = AntState.Idle;
+    private TrailManager trailManager;
+    private Vector3 lastTrailPosition;
 
 
     // Start is called before the first frame update
@@ -35,6 +40,7 @@ public class AntMovement : MonoBehaviour
         child = bbyFood;
         agent = GetComponent<NavMeshAgent>();
         agent.speed = 4.0f;
+        trailManager = FindObjectOfType<TrailManager>();
         Transition2State(AntState.Search);
     }
 
@@ -72,19 +78,27 @@ public class AntMovement : MonoBehaviour
         if (hasChild)
         {
             Transition2State(AntState.Return);
-
+            return; // Gå ur tidigt pga den borde gå tbx till nest
         }
+
         // Myrorna förflyttar sig randomly för att söka efter mat
         if (!foundFood && !hasChild)
         {
-            time2NextMove -= Time.deltaTime;
-
-            if (agent.remainingDistance <= agent.stoppingDistance)
+            // Kolla efter trails i närheten
+            Vector3 trailPoint = trailManager.GetClosestTrailPoint(transform.position, trailDetectionRange);
+            if (trailPoint != Vector3.zero)
             {
-                if (time2NextMove <= 0.0f)
+                // Följ trailen
+                agent.destination = lastTrailPosition;
+                lastTrailPosition = trailPoint; // Spara positionen som en referens
+            }
+            else
+            {
+                // Ingen trail hittad, gå runt randomly
+                agent.stoppingDistance = 0.2f;
+                if (agent.remainingDistance <= agent.stoppingDistance)
                 {
                     Move2RandPos();
-                    time2NextMove = moveCooldown;
                 }
             }
 
@@ -95,7 +109,8 @@ public class AntMovement : MonoBehaviour
                 if (foodCollider.CompareTag("Food") && foodCollider.transform.parent == null)
                 {
                     food = foodCollider.gameObject; // Denna behövs för att uppdatera matreferensen, som nu är upplockad
-                    agent.destination = food.transform.position;
+                    initialFoodPosition = food.transform.position;
+                    agent.destination = initialFoodPosition;
 
                     float dist2Food = Vector3.Distance(transform.position, food.transform.position);
                     if (dist2Food <= 1.0f)
@@ -106,7 +121,6 @@ public class AntMovement : MonoBehaviour
                     }
                 }
             }
-
         }
         else if (!hasChild)
         {
@@ -140,6 +154,8 @@ public class AntMovement : MonoBehaviour
         {
             GetComponent<TrailRenderer>().emitting = true;
             agent.destination = nest.transform.position;
+
+            trailManager.AddTrailPoint(transform.position);
 
             float dist2Nest = Vector3.Distance(transform.position, nest.transform.position);
             if (dist2Nest <= 1.0f)
@@ -209,7 +225,7 @@ public class AntMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //FleeFromEnemy();
+        FleeFromEnemy();
 
         switch (currentState)
         {
@@ -226,7 +242,7 @@ public class AntMovement : MonoBehaviour
                 break;
 
             case AntState.Flee:
-                FleeFromEnemy();
+                // Behöver inte kalla på den igen, ba fortsätt fly
                 break;
 
             case AntState.Attacked:
