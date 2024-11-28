@@ -14,7 +14,7 @@ public class EnemyMovement : MonoBehaviour
     public float attackCooldown = 2.0f;
     private float time2NextAttack = 0.0f;
     //public GameObject nest; // Om enemy ska direkt påverka nest på nåt sätt
-    private GameObject targetAnt;
+    public GameObject targetAnt;
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +60,8 @@ public class EnemyMovement : MonoBehaviour
         if (targetAnt != null)
         {
             agent.SetDestination(targetAnt.transform.position);
-            float distanceToAnt = Vector3.Distance(transform.position, targetAnt.transform.position);
+            targetAnt.GetComponent<AntMovement>().currentState = AntMovement.AntState.Flee;
+                float distanceToAnt = Vector3.Distance(transform.position, targetAnt.transform.position);
 
             // Kolla om myran är inom atk range
             if (distanceToAnt <= attackRange && time2NextAttack <= 0.0f)

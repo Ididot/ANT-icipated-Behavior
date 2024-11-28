@@ -20,7 +20,7 @@ public class AntMovement : MonoBehaviour
     private GameObject child;
     public bool hasChild = false;
     private Vector3[] trailPositions;
-    private enum AntState
+    public enum AntState
     {
         Idle,
         Search,
@@ -28,7 +28,7 @@ public class AntMovement : MonoBehaviour
         Flee,
         Attacked
     };
-    [SerializeField] private AntState currentState = AntState.Idle;
+    public AntState currentState = AntState.Idle;
     private TrailManager trailManager;
     private Vector3 lastTrailPosition;
 
@@ -36,7 +36,6 @@ public class AntMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<TrailRenderer>().emitting = false;
         child = bbyFood;
         agent = GetComponent<NavMeshAgent>();
         agent.speed = 4.0f;
@@ -113,7 +112,7 @@ public class AntMovement : MonoBehaviour
                     agent.destination = initialFoodPosition;
 
                     float dist2Food = Vector3.Distance(transform.position, food.transform.position);
-                    if (dist2Food <= 1.0f)
+                    if (hasChild)
                     {
                         foundFood = true;
                         //Debug.Log("Wooow foowmd!!");
@@ -150,8 +149,10 @@ public class AntMovement : MonoBehaviour
 
     void Return2Nest()
     {
+        Debug.Log("I should go home");
         if (hasChild) //Ant has food to return to nest with
         {
+            Debug.Log("I'm going home now");
             GetComponent<TrailRenderer>().emitting = true;
             agent.destination = nest.transform.position;
 
