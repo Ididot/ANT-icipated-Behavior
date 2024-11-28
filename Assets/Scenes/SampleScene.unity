@@ -887,7 +887,7 @@ MonoBehaviour:
   food: {fileID: 216502010}
   bbyFood: {fileID: 1061579608}
   foundFood: 0
-  detectionRange: 5
+  detectionRange: 1
   trailDetectionRange: 5
   enemyDetectionRange: 3.5
   hasChild: 0
@@ -1451,7 +1451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc74637991cc7b479438bfcd3d798e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trailDecayRate: 1
+  trailDecayRate: 2
 --- !u!1 &2107504398
 GameObject:
   m_ObjectHideFlags: 0
