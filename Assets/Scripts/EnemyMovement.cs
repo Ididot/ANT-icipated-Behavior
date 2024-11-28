@@ -60,7 +60,7 @@ public class EnemyMovement : MonoBehaviour
         if (targetAnt != null)
         {
             agent.SetDestination(targetAnt.transform.position);
-            targetAnt.GetComponent<AntMovement>().currentState = AntMovement.AntState.Flee;
+                targetAnt.GetComponent<AntMovement>().Transition2State(AntMovement.AntState.Flee);
                 float distanceToAnt = Vector3.Distance(transform.position, targetAnt.transform.position);
 
             // Kolla om myran är inom atk range

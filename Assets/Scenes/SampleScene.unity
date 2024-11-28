@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 367349358}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -417,6 +417,7 @@ MonoBehaviour:
   attackDamage: 1
   attackRange: 1.5
   attackCooldown: 2
+  targetAnt: {fileID: 0}
 --- !u!195 &367349354
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -887,7 +888,8 @@ MonoBehaviour:
   bbyFood: {fileID: 1061579608}
   foundFood: 0
   detectionRange: 5
-  moveCooldown: 3
+  trailDetectionRange: 5
+  enemyDetectionRange: 3.5
   hasChild: 0
   currentState: 0
 --- !u!54 &816680543
@@ -1028,7 +1030,7 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_MaskInteraction: 0
   m_Autodestruct: 0
-  m_Emitting: 1
+  m_Emitting: 0
   m_ApplyActiveColorSpace: 0
 --- !u!1 &872848742 stripped
 GameObject:

@@ -28,7 +28,7 @@ public class AntMovement : MonoBehaviour
         Flee,
         Attacked
     };
-    public AntState currentState = AntState.Idle;
+    [SerializeField] private AntState currentState = AntState.Idle;
     private TrailManager trailManager;
     private Vector3 lastTrailPosition;
 
@@ -66,10 +66,10 @@ public class AntMovement : MonoBehaviour
         return hit.position;
     }
 
-    void Transition2State(AntState newState)
+    public void Transition2State(AntState newState)
     {
         currentState = newState;
-        //Debug.Log("TRANSITIONED TO STATE: " + newState.ToString());
+        Debug.Log("TRANSITIONED TO STATE: " + newState.ToString());
     }
 
     void Search4Food()
@@ -112,7 +112,7 @@ public class AntMovement : MonoBehaviour
                     agent.destination = initialFoodPosition;
 
                     float dist2Food = Vector3.Distance(transform.position, food.transform.position);
-                    if (hasChild)
+                    if (dist2Food <1.0f) 
                     {
                         foundFood = true;
                         //Debug.Log("Wooow foowmd!!");
@@ -149,13 +149,10 @@ public class AntMovement : MonoBehaviour
 
     void Return2Nest()
     {
-        Debug.Log("I should go home");
         if (hasChild) //Ant has food to return to nest with
         {
-            Debug.Log("I'm going home now");
-            GetComponent<TrailRenderer>().emitting = true;
             agent.destination = nest.transform.position;
-
+            GetComponent<TrailRenderer>().emitting = true;
             trailManager.AddTrailPoint(transform.position);
 
             float dist2Nest = Vector3.Distance(transform.position, nest.transform.position);
@@ -192,6 +189,10 @@ public class AntMovement : MonoBehaviour
 
     void FleeFromEnemy()
     {
+        if (hasChild)
+        {
+            Transition2State(AntState.Return);
+        }
         Collider[] enemyInRange = Physics.OverlapSphere(transform.position, detectionRange);
 
         foreach (Collider enemy in enemyInRange)
@@ -209,7 +210,7 @@ public class AntMovement : MonoBehaviour
                 return;
             }
         }
-        Transition2State(AntState.Search);
+        Transition2State(AntState.Search) ;
     }
 
     void HandleAttack()
@@ -226,8 +227,6 @@ public class AntMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        FleeFromEnemy();
-
         switch (currentState)
         {
             case AntState.Idle:
@@ -244,6 +243,7 @@ public class AntMovement : MonoBehaviour
 
             case AntState.Flee:
                 // Behöver inte kalla på den igen, ba fortsätt fly
+                FleeFromEnemy();
                 break;
 
             case AntState.Attacked:
