@@ -69,7 +69,7 @@ public class AntMovement : MonoBehaviour
     public void Transition2State(AntState newState)
     {
         currentState = newState;
-        Debug.Log("TRANSITIONED TO STATE: " + newState.ToString());
+       // Debug.Log("TRANSITIONED TO STATE: " + newState.ToString());
     }
 
     void Search4Food()
@@ -168,15 +168,15 @@ public class AntMovement : MonoBehaviour
                     if (transform.childCount > 0) // Ensure the ant has a child before attempting to destroy it
                     {
                         Destroy(gameObject.transform.GetChild(0).gameObject); // Destroy the first child
-                        hasChild = false;
                         nest.GetComponent<Nest>().spawnAnt(this); // Spawn a new ant
                         nest.GetComponent<Nest>().food++;
                     }
                 }
-                Transition2State(AntState.Search);
+                
                 GetComponent<TrailRenderer>().emitting = false;
-                Vector3 temp=GetComponent<TrailRenderer>().GetPosition(GetComponent<TrailRenderer>().positionCount-1);
-                Debug.Log(temp + "<-Trail end / ANT position->"+transform.position );
+                Transition2State(AntState.Search);
+                /*Vector3 temp=GetComponent<TrailRenderer>().GetPosition(GetComponent<TrailRenderer>().positionCount-1);
+                Debug.Log(temp + "<-Trail end / ANT position->"+transform.position ); */
 
             }
             //int posCount = GetComponent<TrailRenderer>().GetVisiblePositions(trailPositions);

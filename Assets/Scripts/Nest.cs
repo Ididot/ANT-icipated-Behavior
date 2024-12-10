@@ -43,9 +43,11 @@ public class Nest : MonoBehaviour
 
     public void spawnAnt(AntMovement ant)
     {
-        if (AntCount < AntCountMax && ant.hasChild)
+        if (ant.hasChild && AntCount < AntCountMax)
         {
         Instantiate(_spawnAnt, spawnPos, transform.rotation, transform);
+        ant.hasChild = false;
+            
         ++AntCount;
             --food;
 
